@@ -1,0 +1,8 @@
+__pycache__
+pythonenv*
+venv
+.venv
+.coverage
+.idea
+tests_link
+zeversolar_local_link
