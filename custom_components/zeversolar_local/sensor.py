@@ -1,4 +1,4 @@
-"""Sensor platform for ZeverSolar inverter."""
+"""Sensor platform for Zeversolar inverter."""
 import async_timeout
 from homeassistant.components.sensor import (  # STATE_CLASS_TOTAL_INCREASING,
     STATE_CLASS_MEASUREMENT,
@@ -62,9 +62,9 @@ async def async_setup_entry(hass, entry, async_add_entities):
 
     device_info = DeviceInfo(
         identifiers={(DOMAIN, inverter.serial_number)},
-        name=f"ZeverSolar inverter '{inverter.serial_number}'",
+        name=f"Zeversolar inverter '{inverter.serial_number}'",
         # model="Model A [model]",
-        manufacturer="ZeverSolar",
+        manufacturer="Zeversolar",
         # hw_version="M10",
         # sw_version="17717-709R+17511-707R",
     )
@@ -109,19 +109,19 @@ _DEFAULT_SENSOR = SensorEntityDescription(
 
 
 class Sensor:
-    """Defines a sensor of the ZeverSolar inverter"""
+    """Defines a sensor of the Zeversolar inverter"""
 
     def __init__(self, sensor_id: str) -> None:
         self._sensor_id = sensor_id
 
     @property
     def sensor_id(self) -> str:
-        """The ZeverSolar sensor ID."""
+        """The Zeversolar sensor ID."""
         return self._sensor_id
 
 
 class Inverter:
-    """Defines a ZeverSolar inverter."""
+    """Defines a Zeversolar inverter."""
 
     def __init__(
         self,

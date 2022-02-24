@@ -1,6 +1,6 @@
 {
   "domain": "zeversolar_local",
-  "name": "ZeverSolar Inverter - local",
+  "name": "Zeversolar Inverter - local",
   "config_flow": true,
   "documentation": "https://www.home-assistant.io/integrations/zeversolar_local",
   "issue_tracker": "https://github.com/custom-components/zeversolar_local/issues",

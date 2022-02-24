@@ -2,7 +2,7 @@
     "config": {
         "abort": {
             "duplicate_inverter": "Ger\u00e4t ist bereits konfiguriert",
-            "invalid_inverter": "Kein ZeverSolar Wechselrichter"
+            "invalid_inverter": "Kein Zeversolar Wechselrichter"
         },
         "error": {
             "error_inverter": "Wechselrichter - Datenfehler",
@@ -14,7 +14,7 @@
                     "host": "IP-Adresse"
                 },
                 "description": "Mit lokalen IP-Adresse verbinden.",
-                "title": "ZeverSolar Inverter"
+                "title": "Zeversolar Inverter"
             }
         }
     },

@@ -1,4 +1,4 @@
-"""The ZeverSolar Inverter local coordinator."""
+"""The Zeversolar Inverter local coordinator."""
 from __future__ import annotations
 
 from datetime import timedelta

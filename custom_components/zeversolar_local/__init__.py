@@ -1,4 +1,4 @@
-"""integrates a ZeverSolar inverter to Home Assistant using its local API."""
+"""integrates a Zeversolar inverter to Home Assistant using its local API."""
 from __future__ import annotations
 
 import asyncio
@@ -29,7 +29,7 @@ async def async_setup_entry(hass: HomeAssistant, entry: ConfigEntry) -> bool:
         hass.data.setdefault(DOMAIN, {})
         _LOGGER.info(STARTUP_MESSAGE)
 
-    # Set up ZeverSolar Inverter local from a config entry.
+    # Set up Zeversolar Inverter local from a config entry.
     host = entry.data.get(CONF_HOST)
     # zever_id = entry.data.get(CONF_SERIAL_NO)
 

@@ -1,4 +1,4 @@
-"""Wraps the API to connect to a ZeverSolar inverter locally."""
+"""Wraps the API to connect to a Zeversolar inverter locally."""
 import logging
 
 import zeversolarlocal as zs
@@ -6,9 +6,9 @@ import zeversolarlocal as zs
 _LOGGER: logging.Logger = logging.getLogger(__package__)
 
 
-# ZeverSolar local API Client."""
+# Zeversolar local API Client."""
 class ZeverSolarApiClient:
-    """Wraps the ZeverSolar API"""
+    """Wraps the Zeversolar API"""
 
     # Initialize the class
     def __init__(self, host: str) -> None:

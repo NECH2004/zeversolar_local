@@ -1,11 +1,11 @@
-"""Constants for the ZeverSolar Inverter local integration."""
+"""Constants for the Zeversolar Inverter local integration."""
 from homeassistant.const import Platform
 
 # Base component constants
-NAME = "ZeverSolar Local Integration"
-DEVICE_NAME = "ZeverSolar Inverter"
+NAME = "Zeversolar Local Integration"
+DEVICE_NAME = "Zeversolar Inverter"
 DEVICE_MODEL = "Universal Inverter Device"
-MANUFACTURER_NAME = "ZeverSolar"
+MANUFACTURER_NAME = "Zeversolar"
 
 ISSUE_URL = "https://github.com/nech/zeversolar_local/issues"
 
@@ -33,7 +33,7 @@ STARTUP_MESSAGE = f"""
 -------------------------------------------------------------------
 {NAME}
 Version: {VERSION}
-Fetch data from a ZeverSolar inverter using its local API.
+Fetch data from a Zeversolar inverter using its local API.
 This is a custom integration!
 If you have any issues with this you need to open an issue here:
 {ISSUE_URL}
