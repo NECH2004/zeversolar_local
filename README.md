@@ -1,8 +1,14 @@
 [![GitHub Release][releases-shield]][releases]
-[![GitHub Activity][commits-shield]][commits]
 [![License][license-shield]](LICENSE)
 
 [![hacs][hacsbadge]][hacs]
+
+[![GitHub Activity][commits-shield_y]][commits]
+[![GitHub Activity][commits-shield_m]][commits]
+[![GitHub Activity][commits-shield_w]][commits]
+
+
+[![Validate][validate-shield]][validation]
 
 <!--
 [!Project Maintenance][maintenance-shield]
@@ -73,8 +79,13 @@ Also thanks for instructions, blueprints, container etc. that are very helpful f
 [releases-shield]: https://img.shields.io/github/v/release/NECH2004/zeversolar_local?style=for-the-badge
 [releases]: https://github.com/NECH2004/zeversolar_local/releases
 
-[commits-shield]: https://img.shields.io/github/commit-activity/y/NECH2004/zeversolar_local?style=for-the-badge
+[commits-shield_y]: https://img.shields.io/github/commit-activity/y/NECH2004/zeversolar_local?style=for-the-badge
+[commits-shield_m]: https://img.shields.io/github/commit-activity/m/NECH2004/zeversolar_local?style=for-the-badge
+[commits-shield_w]: https://img.shields.io/github/commit-activity/w/NECH2004/zeversolar_local?style=for-the-badge
 [commits]: https://github.com/NECH2004/zeversolar_local/commits/dev
+
+[validate-shield]: https://github.com/NECH2004/zeversolar_local/actions/workflows/validate.yml/badge.svg?branch=dev
+[validation]: https://github.com/NECH2004/zeversolar_local/actions/workflows/validate.yml
 
 [hacs]: https://github.com/custom-components/hacs
 [hacsbadge]: https://img.shields.io/badge/HACS-Custom-orange.svg?style=for-the-badge
