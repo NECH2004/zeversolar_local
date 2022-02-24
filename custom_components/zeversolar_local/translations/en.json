@@ -26,7 +26,7 @@
         "step": {
             "init": {
                 "data": {
-                    "zever_data_interval": "Update inverval [s]"
+                    "zever_data_interval": "Update interval [s]"
                 },
                 "title": "Set update rate in seconds"
             }

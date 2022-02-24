@@ -23,7 +23,7 @@ from custom_components.zeversolar_local.sensor import (
 
 
 def async_add_entities(entities):
-    """Add entites to a sensor as simuation for unit test. Helper method."""
+    """Add entities to a sensor as simuation for unit test. Helper method."""
     count = entities.__len__()
     assert count == 2
 

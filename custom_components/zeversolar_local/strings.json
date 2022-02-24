@@ -23,7 +23,7 @@
       "init": {
         "title": "Set update rate in seconds",
         "data": {
-          "zever_data_interval": "Update inverval [s]"
+          "zever_data_interval": "Update interval [s]"
         }
       }
     },
