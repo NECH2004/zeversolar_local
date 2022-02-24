@@ -1,0 +1,35 @@
+{
+    "config": {
+        "abort": {
+            "duplicate_inverter": "Ger\u00e4t ist bereits konfiguriert",
+            "invalid_inverter": "Kein ZeverSolar Wechselrichter"
+        },
+        "error": {
+            "error_inverter": "Wechselrichter - Datenfehler",
+            "host": "Hostname ist falsch oder ung\u00fcltig."
+        },
+        "step": {
+            "user": {
+                "data": {
+                    "host": "IP-Adresse"
+                },
+                "description": "Mit lokalen IP-Adresse verbinden.",
+                "title": "ZeverSolar Inverter"
+            }
+        }
+    },
+    "options": {
+        "error": {
+            "data_interval_empty": "Bitte geben Sie eine Aktualisierungsrate zwischen 10 und 3600 Sekunden ein.",
+            "data_interval_wrong": "Aktualisierungsintervall muss zwischen 10 und 3600 Sekunden liegen."
+        },
+        "step": {
+            "init": {
+                "data": {
+                    "zever_data_interval": "Update Intervall [s]"
+                },
+                "title": "Aktualisierungsintervall in Sekunden"
+            }
+        }
+    }
+}

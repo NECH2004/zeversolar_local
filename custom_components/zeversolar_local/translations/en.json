@@ -1,19 +1,19 @@
 {
     "config": {
         "abort": {
-            "duplicate_inverter": "Inverter is already in use.",
-            "invalid_inverter": "This address is no inverter."
+            "duplicate_inverter": "Device is already configured",
+            "invalid_inverter": "No ZeverSolar inverter"
         },
         "error": {
-            "error_inverter": "Inverter data error.",
-            "host": "Host name is wrong or invalid."
+            "error_inverter": "Inverter data error",
+            "host": "Host name is wrong or invalid"
         },
         "step": {
             "user": {
                 "data": {
-                    "host": "IP address"
+                    "host": "IP Address"
                 },
-                "description": "Connect to inverter using its local IP address.",
+                "description": "Connect to local IP address",
                 "title": "ZeverSolar Inverter"
             }
         }
