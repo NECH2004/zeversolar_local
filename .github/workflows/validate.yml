@@ -3,10 +3,10 @@ name: Validate
 on:
   pull_request:
     branches:
-      - master
+      - dev
   push:
     branches:
-      - master
+      - dev
   schedule:
     - cron:  '30 16 */3 * *'
 
