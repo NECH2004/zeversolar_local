@@ -12,16 +12,16 @@
 [![Community Forum][forum-shield]][forum]
 -->
 
-# ZeverSolar inverter integration for Home Assistant
+# Zeversolar inverter integration for Home Assistant
 
 <!--_Component to integrate with [zeversolar_local][zeversolar_local]._ -->
-_Component to integrate with a ZeverSolar inverter using its local API._
+_Component to integrate with a Zeversolar inverter using its local API._
 
 **This component will set up the following platform.**
 
 Platform | Description
 -- | --
-`sensor` | Show information from the ZeverSolar inverter.
+`sensor` | Show information from the Zeversolar inverter.
 
 <!-- ![example][exampleimg] -->
 
@@ -32,7 +32,7 @@ Platform | Description
 3. Download _all_ the files from the `custom_components/zeversolar_local/` directory (folder) in this repository.
 4. Place the files you downloaded in the new directory (folder) you created.
 5. Restart Home Assistant
-6. In the HA UI go to "Configuration" -> "Integrations" click "+" and search for "ZeverSolar Inverter - local API integration"
+6. In the HA UI go to "Configuration" -> "Integrations" click "+" and search for "Zeversolar Inverter - local"
 
 ## Configuration is done in the UI
 

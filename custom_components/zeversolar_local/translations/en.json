@@ -2,7 +2,7 @@
     "config": {
         "abort": {
             "duplicate_inverter": "Device is already configured",
-            "invalid_inverter": "No ZeverSolar inverter"
+            "invalid_inverter": "No Zeversolar inverter"
         },
         "error": {
             "error_inverter": "Inverter data error",
@@ -14,7 +14,7 @@
                     "host": "IP Address"
                 },
                 "description": "Connect to local IP address",
-                "title": "ZeverSolar Inverter"
+                "title": "Zeversolar Inverter"
             }
         }
     },

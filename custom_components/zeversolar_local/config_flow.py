@@ -1,4 +1,4 @@
-"""Config flow for ZeverSolar Inverter local API."""
+"""Config flow for Zeversolar Inverter local API."""
 import logging
 
 from homeassistant import config_entries
@@ -14,7 +14,7 @@ _LOGGER = logging.getLogger(__name__)
 
 
 class ZeverSolarFlowHandler(config_entries.ConfigFlow, domain=DOMAIN):
-    """Config flow for ZeverSolar local API integration."""
+    """Config flow for Zeversolar local API integration."""
 
     VERSION = 1
     CONNECTION_CLASS = config_entries.CONN_CLASS_LOCAL_POLL
@@ -32,17 +32,17 @@ class ZeverSolarFlowHandler(config_entries.ConfigFlow, domain=DOMAIN):
             try:
                 zever_id = await self._get_id(user_input[CONF_HOST])
             except ZeverTimeout as exception:
-                _LOGGER.debug("fetching ZeverSolar inverter id failed - %s", exception)
+                _LOGGER.debug("fetching Zeversolar inverter id failed - %s", exception)
                 return self.async_abort(reason="invalid_inverter")
 
             except ZeverError as exception:
-                _LOGGER.debug("fetching ZeverSolar inverter id failed - %s", exception)
+                _LOGGER.debug("fetching Zeversolar inverter id failed - %s", exception)
                 self._errors["base"] = "error_inverter"
                 return await self._show_config_form()
 
             except Exception as exception:  # pylint: disable=broad-except
                 _LOGGER.debug(
-                    "fetching ZeverSolar inverter id failed witch general exception - %s",
+                    "fetching Zeversolar inverter id failed witch general exception - %s",
                     exception,
                 )
                 return self.async_abort(reason="invalid_inverter")
@@ -57,7 +57,7 @@ class ZeverSolarFlowHandler(config_entries.ConfigFlow, domain=DOMAIN):
                         return self.async_abort(reason="duplicate_inverter")
 
                 return self.async_create_entry(
-                    title=f"ZeverSolar Inverter '{zever_id}'",
+                    title=f"Zeversolar Inverter '{zever_id}'",
                     data={CONF_HOST: user_input[CONF_HOST], CONF_SERIAL_NO: zever_id},
                 )
             else:
@@ -97,7 +97,7 @@ class ZeverSolarFlowHandler(config_entries.ConfigFlow, domain=DOMAIN):
 
 
 class ZeverSolarOptionsFlowHandler(config_entries.OptionsFlow):
-    """Defines the configurable options for a ZeverSolar inverter"""
+    """Defines the configurable options for a Zeversolar inverter"""
 
     def __init__(self, config_entry):
         """Initialize options flow."""

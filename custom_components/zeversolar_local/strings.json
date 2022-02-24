@@ -2,7 +2,7 @@
   "config": {
     "step": {
       "user": {
-        "title": "ZeverSolar Inverter",
+        "title": "Zeversolar Inverter",
         "description": "Connect to local IP address.",
         "data": {
           "host": "IP Address"
@@ -15,7 +15,7 @@
     },
     "abort": {
       "duplicate_inverter": "Device is already configured",
-      "invalid_inverter": "No ZeverSolar inverter"
+      "invalid_inverter": "No Zeversolar inverter"
     }
   },
   "options": {
