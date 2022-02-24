@@ -1,0 +1,35 @@
+{
+    "config": {
+        "abort": {
+            "duplicate_inverter": "Inverter is already in use.",
+            "invalid_inverter": "This address is no inverter."
+        },
+        "error": {
+            "error_inverter": "Inverter data error.",
+            "host": "Host name is wrong or invalid."
+        },
+        "step": {
+            "user": {
+                "data": {
+                    "host": "IP address"
+                },
+                "description": "Connect to inverter using its local IP address.",
+                "title": "ZeverSolar Inverter"
+            }
+        }
+    },
+    "options": {
+        "error": {
+            "data_interval_empty": "Please enter an update rate between 10 and 3600 seconds.",
+            "data_interval_wrong": "Update rate must be between 10 and 3600 seconds."
+        },
+        "step": {
+            "init": {
+                "data": {
+                    "zever_data_interval": "Update inverval [s]"
+                },
+                "title": "Set update rate in seconds"
+            }
+        }
+    }
+}

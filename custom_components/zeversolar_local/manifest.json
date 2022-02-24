@@ -1,0 +1,15 @@
+{
+  "domain": "zeversolar_local",
+  "name": "ZeverSolar Inverter - local",
+  "config_flow": true,
+  "documentation": "https://www.home-assistant.io/integrations/zeversolar_local",
+  "issue_tracker": "https://github.com/custom-components/zeversolar_local/issues",
+  "requirements": [
+    "zeversolarlocal==1.1.0"
+  ],
+  "codeowners": [
+    "@NECH"
+  ],
+  "iot_class": "local_polling",
+  "version": "0.0.1"
+}

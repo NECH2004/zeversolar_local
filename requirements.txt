@@ -1,0 +1,6 @@
+black==19.10b0
+pre-commit==2.6.0
+homeassistant
+zeversolarlocal
+pytest-homeassistant-custom-component==0.6.15
+
