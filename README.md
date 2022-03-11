@@ -20,7 +20,7 @@
 
 # Zeversolar inverter integration for Home Assistant
 
-<!--_Component to integrate with [zeversolar_local][zeversolar_local]._ -->
+<!--_Component to integrate with [zeversolar_local_ha][zeversolar_local_ha]._ -->
 _Component to integrate with a Zeversolar inverter using its local API._
 
 **This component will set up the following platform.**
@@ -34,8 +34,8 @@ Platform | Description
 ## Installation
 
 1. If you do not have a `custom_components` directory (folder) there, you need to create it.
-2. In the `custom_components` directory (folder) create a new folder called `zeversolar_local`.
-3. Download _all_ the files from the `custom_components/zeversolar_local/` directory (folder) in this repository.
+2. In the `custom_components` directory (folder) create a new folder called `zeversolar_local_ha`.
+3. Download _all_ the files from the `custom_components/zeversolar_local_ha/` directory (folder) in this repository.
 4. Place the files you downloaded in the new directory (folder) you created.
 5. Restart Home Assistant
 6. In the HA UI go to "Configuration" -> "Integrations" click "+" and search for "Zeversolar Inverter - local"
@@ -76,23 +76,23 @@ Also thanks for instructions, blueprints, container etc. that are very helpful f
 ***
 
 <!-- HACS-Default-orange.svg?style=for-the-badge -->
-[releases-shield]: https://img.shields.io/github/v/release/NECH2004/zeversolar_local?style=for-the-badge
-[releases]: https://github.com/NECH2004/zeversolar_local/releases
+[releases-shield]: https://img.shields.io/github/v/release/NECH2004/zeversolar_local_ha?style=for-the-badge
+[releases]: https://github.com/NECH2004/zeversolar_local_ha/releases
 
-[commits-shield_y]: https://img.shields.io/github/commit-activity/y/NECH2004/zeversolar_local?style=for-the-badge
-[commits-shield_m]: https://img.shields.io/github/commit-activity/m/NECH2004/zeversolar_local?style=for-the-badge
-[commits-shield_w]: https://img.shields.io/github/commit-activity/w/NECH2004/zeversolar_local?style=for-the-badge
-[commits]: https://github.com/NECH2004/zeversolar_local/commits/dev
+[commits-shield_y]: https://img.shields.io/github/commit-activity/y/NECH2004/zeversolar_local_ha?style=for-the-badge
+[commits-shield_m]: https://img.shields.io/github/commit-activity/m/NECH2004/zeversolar_local_ha?style=for-the-badge
+[commits-shield_w]: https://img.shields.io/github/commit-activity/w/NECH2004/zeversolar_local_ha?style=for-the-badge
+[commits]: https://github.com/NECH2004/zeversolar_local_ha/commits/dev
 
-[validate-shield]: https://github.com/NECH2004/zeversolar_local/actions/workflows/validate.yml/badge.svg?branch=dev
-[validation]: https://github.com/NECH2004/zeversolar_local/actions/workflows/validate.yml
+[validate-shield]: https://github.com/NECH2004/zeversolar_local_ha/actions/workflows/validate.yml/badge.svg?branch=dev
+[validation]: https://github.com/NECH2004/zeversolar_local_ha/actions/workflows/validate.yml
 
 [hacs]: https://github.com/custom-components/hacs
 [hacsbadge]: https://img.shields.io/badge/HACS-Custom-orange.svg?style=for-the-badge
-[license-shield]:https://img.shields.io/github/license/NECH2004/zeversolar_local?style=for-the-badge
+[license-shield]:https://img.shields.io/github/license/NECH2004/zeversolar_local_ha?style=for-the-badge
 [maintenance-shield]: https://img.shields.io/badge/maintainer-Christian%20Neumeier%20%40NECH2004?style=for-the-badge
 
-[zeversolar_local]: https://github.com/NECH2004/zeversolar_local
+[zeversolar_local_ha]: https://github.com/NECH2004/zeversolar_local_ha
 [exampleimg]: example.png
 [forum-shield]: https://img.shields.io/badge/community-forum-brightgreen.svg?style=for-the-badge
 [forum]: https://community.home-assistant.io/
