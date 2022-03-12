@@ -15,6 +15,9 @@ DOMAIN_DATA = f"{DOMAIN}_data"
 
 CONF_SERIAL_NO = "zever_serial_number"
 
+ENTRY_COORDINATOR = "zever_coordinator"
+ENTRY_DEVICE_INFO = "zever_device_info"
+
 OPT_DATA_INTERVAL = "zever_data_interval"
 OPT_DATA_INTERVAL_VALUE: int = 30
 
@@ -23,7 +26,7 @@ OPT_DATA_INTERVAL_VALUE: int = 30
 VERSION = "1.0.0"
 
 """List of platforms that are supported."""
-PLATFORMS = [Platform.SENSOR]
+PLATFORMS = [Platform.SENSOR, Platform.BUTTON]
 
 # Additional
 STARTUP_MESSAGE = f"""

@@ -1,9 +1,9 @@
 """Test the config flow."""
 from unittest.mock import patch
-import httpx
 
 from homeassistant.config_entries import OptionsFlow
 from homeassistant.const import CONF_HOST
+import httpx
 from pytest_homeassistant_custom_component.common import MockConfigEntry
 
 from custom_components.zeversolar_local.config_flow import (

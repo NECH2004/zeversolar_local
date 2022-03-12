@@ -9,9 +9,13 @@ from homeassistant.config_entries import ConfigEntry
 from homeassistant.const import CONF_HOST
 from homeassistant.core import HomeAssistant
 from homeassistant.exceptions import ConfigEntryNotReady
+from homeassistant.helpers.entity import DeviceInfo
 
-from .const import (  # CONF_SERIAL_NO,
+from .const import (
     DOMAIN,
+    CONF_SERIAL_NO,
+    ENTRY_COORDINATOR,
+    ENTRY_DEVICE_INFO,
     OPT_DATA_INTERVAL,
     OPT_DATA_INTERVAL_VALUE,
     PLATFORMS,
@@ -44,8 +48,33 @@ async def async_setup_entry(hass: HomeAssistant, entry: ConfigEntry) -> bool:
     if not coordinator.last_update_success:
         raise ConfigEntryNotReady
 
-    # Store the coordinator object for the platforms to access
-    hass.data[DOMAIN][entry.entry_id] = coordinator
+    serial_number = entry.data[CONF_SERIAL_NO]
+
+    inverter_data = await coordinator.client.async_get_data()
+    hardware_version = inverter_data.hardware_version
+    software_version = inverter_data.software_version
+
+    device_info = DeviceInfo(
+        configuration_url=f"http://{host}",
+        # default_manufacturer: str
+        # default_model: str
+        # default_name: str
+        # entry_type: DeviceEntryType | None
+        identifiers={(DOMAIN, serial_number)},
+        manufacturer="Zeversolar",
+        # model: str | None
+        name=f"Zeversolar inverter '{serial_number}'",
+        # suggested_area: str | None
+        sw_version=software_version,
+        hw_version=hardware_version
+        # via_device: tuple[str, str]
+    )
+
+    # Store the deviceinfo and  coordinator object for the platforms to access
+    hass.data[DOMAIN][entry.entry_id] = {
+        ENTRY_COORDINATOR: coordinator,
+        ENTRY_DEVICE_INFO: device_info,
+    }
 
     for platform in PLATFORMS:
         coordinator.platforms.append(platform)
@@ -60,7 +89,7 @@ async def async_setup_entry(hass: HomeAssistant, entry: ConfigEntry) -> bool:
 
 async def async_unload_entry(hass: HomeAssistant, entry: ConfigEntry) -> bool:
     """Handle removal of an entry."""
-    coordinator = hass.data[DOMAIN][entry.entry_id]
+    coordinator = hass.data[DOMAIN][entry.entry_id][ENTRY_COORDINATOR]
     unloaded = all(
         await asyncio.gather(
             *[

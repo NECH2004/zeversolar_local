@@ -16,9 +16,9 @@ _LOGGER = logging.getLogger(__name__)
 class ZeversolarApiCoordinator(DataUpdateCoordinator):
     """Class to manage fetching data from the API."""
 
-    def __init__(self, hass: HomeAssistant, client: ZeverSolarApiClient,) -> None:
+    def __init__(self, hass: HomeAssistant, client: ZeverSolarApiClient) -> None:
         """Initialize."""
-        self.api = client
+        self.client = client
         self.platforms = []
 
         super().__init__(
@@ -33,7 +33,7 @@ class ZeversolarApiCoordinator(DataUpdateCoordinator):
         """Update data via API."""
         try:
             self.last_update_success = True
-            return await self.api.async_get_data()
+            return await self.client.async_get_data()
         except Exception as exception:
             self.logger.debug("Zeversolar get_data() error. %s", exception)
             self.last_update_success = False

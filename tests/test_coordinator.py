@@ -2,8 +2,8 @@
 from unittest.mock import patch
 
 from homeassistant.helpers.update_coordinator import UpdateFailed
-import pytest
 import httpx
+import pytest
 
 from custom_components.zeversolar_local.coordinator import ZeversolarApiCoordinator
 from custom_components.zeversolar_local.zever_local import ZeverSolarApiClient

@@ -25,3 +25,8 @@ class ZeverSolarApiClient:
         """Gets the data"""
         inverter_data = await self._inverter.async_get_data()
         return inverter_data
+
+    @property
+    def inverter(self) -> Inverter:
+        """The Zeversolar inverter."""
+        return self._inverter

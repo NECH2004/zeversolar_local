@@ -1,7 +1,7 @@
 """Tests the ZeverSolar API wrapper."""
-import httpx
-
 from unittest.mock import patch
+
+import httpx
 
 from custom_components.zeversolar_local.zever_local import ZeverSolarApiClient
 

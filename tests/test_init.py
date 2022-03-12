@@ -1,8 +1,9 @@
 """Test component setup."""
 from unittest.mock import patch
-import httpx
+
 from homeassistant.const import CONF_HOST
 from homeassistant.exceptions import ConfigEntryNotReady
+import httpx
 import pytest
 from pytest_homeassistant_custom_component.common import (
     MockConfigEntry,
@@ -16,7 +17,12 @@ from custom_components.zeversolar_local.__init__ import (
     async_setup_entry,
     async_unload_entry,
 )
-from custom_components.zeversolar_local.const import DOMAIN
+from custom_components.zeversolar_local.const import (
+    CONF_SERIAL_NO,
+    DOMAIN,
+    ENTRY_COORDINATOR,
+    ENTRY_DEVICE_INFO,
+)
 from custom_components.zeversolar_local.coordinator import ZeversolarApiCoordinator
 from custom_components.zeversolar_local.zever_local import ZeverSolarApiClient
 
@@ -52,7 +58,9 @@ async def test_async_setup_entry_domain_not_loaded(hass):
     mock_integration(hass, MockModule(DOMAIN))
 
     config_entry = MockConfigEntry(
-        domain=DOMAIN, unique_id="my_unique_test_id", data={CONF_HOST: "TEST_HOST"},
+        domain=DOMAIN,
+        unique_id="my_unique_test_id",
+        data={CONF_HOST: "TEST_HOST", CONF_SERIAL_NO: "serial_no"},
     )
 
     config_entry.add_to_hass(hass)
@@ -73,7 +81,9 @@ async def test_async_setup_entry_domain_already_loaded(hass):
     mock_integration(hass, MockModule(DOMAIN))
 
     config_entry = MockConfigEntry(
-        domain=DOMAIN, unique_id="my_unique_test_id", data={CONF_HOST: "TEST_HOST"},
+        domain=DOMAIN,
+        unique_id="my_unique_test_id",
+        data={CONF_HOST: "TEST_HOST", CONF_SERIAL_NO: "serial_no"},
     )
 
     config_entry.add_to_hass(hass)
@@ -94,17 +104,21 @@ async def test_async_setup_entry_domain_already_loaded_mock_coordinator(hass):
     mock_integration(hass, MockModule(DOMAIN))
 
     config_entry = MockConfigEntry(
-        domain=DOMAIN, unique_id="my_unique_test_id", data={CONF_HOST: "TEST_HOST"},
+        domain=DOMAIN,
+        unique_id="my_unique_test_id",
+        data={CONF_HOST: "TEST_HOST", CONF_SERIAL_NO: "serial_no"},
     )
 
     config_entry.add_to_hass(hass)
 
-    with patch(
-        "custom_components.zeversolar_local.coordinator.ZeversolarApiCoordinator._async_update_data"
-    ) as api_mock:
-        api_mock.return_value = "any_value"
+    with patch("zever_local.inverter.httpx.AsyncClient.get") as api_mock:
+        mock_response = httpx.Response(
+            200, request=httpx.Request("Get", "https://test.t"), content=_byte_content,
+        )
+        api_mock.return_value = mock_response
         test_result = await async_setup_entry(hass, config_entry)
-        assert test_result is True
+
+    assert test_result is True
 
 
 async def test_async_unload_entry_all_can_be_unloaded(hass):
@@ -119,7 +133,9 @@ async def test_async_unload_entry_all_can_be_unloaded(hass):
 
     mock_integration(hass, MockModule(DOMAIN))
     config_entry.add_to_hass(hass)
-    hass.data.setdefault(DOMAIN, {config_entry.entry_id: coordinator})
+    hass.data.setdefault(
+        DOMAIN, {config_entry.entry_id: {ENTRY_COORDINATOR: coordinator}}
+    )
 
     test_result = await async_unload_entry(hass, config_entry)
     assert test_result is True
@@ -131,7 +147,9 @@ async def test_async_reload_entry(hass):
     mock_integration(hass, MockModule(DOMAIN))
 
     config_entry = MockConfigEntry(
-        domain=DOMAIN, unique_id="my_unique_test_id", data={CONF_HOST: "TEST_HOST"},
+        domain=DOMAIN,
+        unique_id="my_unique_test_id",
+        data={CONF_HOST: "TEST_HOST", CONF_SERIAL_NO: "serial_no"},
     )
 
     config_entry.add_to_hass(hass)
@@ -148,7 +166,7 @@ async def test_async_reload_entry(hass):
         # act
         await async_reload_entry(hass, config_entry)
 
-    result_entry = hass.data[DOMAIN].pop(config_entry.entry_id)
+    result_entry = hass.data[DOMAIN].pop(config_entry.entry_id)[ENTRY_COORDINATOR]
 
     # assert
     assert type(result_entry) is ZeversolarApiCoordinator
