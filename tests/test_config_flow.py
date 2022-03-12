@@ -1,5 +1,6 @@
 """Test the config flow."""
 from unittest.mock import patch
+import httpx
 
 from homeassistant.config_entries import OptionsFlow
 from homeassistant.const import CONF_HOST
@@ -14,6 +15,18 @@ from custom_components.zeversolar_local.const import (
     DOMAIN,
     OPT_DATA_INTERVAL,
 )
+
+_registry_id = "EAB241277A36"
+_registry_key = "ZYXTBGERTXJLTSVS"
+_hardware_version = "M11"
+_software_version = "18625-797R+17829-719R"
+_time = "16:22"
+_date = "20/02/2022"
+_serial_number = "ZS150045138C0104"
+_content = f"1\n1\n{_registry_id}\n{_registry_key}\n{_hardware_version}\n{_software_version}\n{_time} {_date}\n1\n1\n{_serial_number}\n1234\n8.9\nOK\nError"
+_mac_address = "EA-B2-41-27-7A-36"
+
+_byte_content = _content.encode()
 
 
 async def test_ZeverSolarFlowHandler_constructor():
@@ -34,33 +47,17 @@ async def test_ZeverSolarFlowHandler_async_step_user_user_input_is_none():
     assert my_flow_result["errors"] == {}
 
 
-async def test_ZeverSolarFlowHandler_async_step_user_user_input_id_is_none():
-    """Tests the user step with data but inverter id cannot be loaded."""
-    result_flow_handler = ZeverSolarFlowHandler()
-
-    data = {CONF_HOST: "TEST_HOST"}
-
-    with patch(
-        "custom_components.zeversolar_local.zeversolar_api.zs.inverter_id"
-    ) as api_mock:
-        api_mock.return_value = None
-        my_flow_result = await result_flow_handler.async_step_user(user_input=data)
-
-    assert my_flow_result["type"] == "form"
-    assert my_flow_result["step_id"] == "user"
-    assert my_flow_result["errors"] == {"base": "host"}
-
-
 async def test_ZeverSolarFlowHandler_async_step_user_user_input_id_loaded_new_inverter():
     """Tests the user step with user data and inverter is not configured yet."""
     result_flow_handler = ZeverSolarFlowHandler()
 
     data = {CONF_HOST: "TEST_HOST"}
 
-    with patch(
-        "custom_components.zeversolar_local.zeversolar_api.zs.inverter_id"
-    ) as api_mock:
-        api_mock.return_value = "my_id"
+    with patch("zever_local.inverter.httpx.AsyncClient.get") as api_mock:
+        mock_response = httpx.Response(
+            200, request=httpx.Request("Get", "https://test.t"), content=_byte_content,
+        )
+        api_mock.return_value = mock_response
         with patch(
             "custom_components.zeversolar_local.config_flow.ZeverSolarFlowHandler._async_current_entries"
         ) as current_entries_mock:
@@ -75,15 +72,14 @@ async def test_ZeverSolarFlowHandler_async_step_user_user_input_id_loaded_duplic
     """Tests the user step with user data and already configured inverter."""
     result_flow_handler = ZeverSolarFlowHandler()
 
-    zever_inverter_id = "zever_inverter_id"
-
-    data = {CONF_HOST: "TEST_HOST", CONF_SERIAL_NO: zever_inverter_id}
+    data = {CONF_HOST: "TEST_HOST", CONF_SERIAL_NO: _mac_address}
 
     converter_entry_mock = MockConfigEntry(domain=DOMAIN, data=data)
-    with patch(
-        "custom_components.zeversolar_local.zeversolar_api.zs.inverter_id"
-    ) as api_mock:
-        api_mock.return_value = zever_inverter_id
+    with patch("zever_local.inverter.httpx.AsyncClient.get") as api_mock:
+        mock_response = httpx.Response(
+            200, request=httpx.Request("Get", "https://test.t"), content=_byte_content,
+        )
+        api_mock.return_value = mock_response
 
         with patch(
             "custom_components.zeversolar_local.config_flow.ZeverSolarFlowHandler._async_current_entries"
@@ -105,10 +101,11 @@ async def test_ZeverSolarFlowHandler_async_step_user_user_input_id_other_inverte
     data = {CONF_HOST: "TEST_HOST", CONF_SERIAL_NO: zever_inverter_id}
 
     converter_entry_mock = MockConfigEntry(domain=DOMAIN, data=data)
-    with patch(
-        "custom_components.zeversolar_local.zeversolar_api.zs.inverter_id"
-    ) as api_mock:
-        api_mock.return_value = zever_inverter_id2
+    with patch("zever_local.inverter.httpx.AsyncClient.get") as api_mock:
+        mock_response = httpx.Response(
+            200, request=httpx.Request("Get", "https://test.t"), content=_byte_content,
+        )
+        api_mock.return_value = mock_response
 
         with patch(
             "custom_components.zeversolar_local.config_flow.ZeverSolarFlowHandler._async_current_entries"
@@ -134,27 +131,25 @@ async def test_ZeverSolarFlowHandler_get_id():
     """Tests the _get_id method returning an id."""
     result_flow_handler = ZeverSolarFlowHandler()
 
-    zever_inverter_id = "zever_inverter_id"
-
-    with patch(
-        "custom_components.zeversolar_local.zeversolar_api.zs.inverter_id"
-    ) as api_mock:
-        api_mock.return_value = zever_inverter_id
+    with patch("zever_local.inverter.httpx.AsyncClient.get") as api_mock:
+        mock_response = httpx.Response(
+            200, request=httpx.Request("Get", "https://test.t"), content=_byte_content,
+        )
+        api_mock.return_value = mock_response
         result_id = await result_flow_handler._get_id("Test_host")
 
-    assert result_id == zever_inverter_id
+    assert result_id == _mac_address
 
 
 async def test_ZeverSolarFlowHandler_test_url():
     """Tests the _test_url method returning an id."""
     result_flow_handler = ZeverSolarFlowHandler()
 
-    zever_inverter_id = "zever_inverter_id"
-
-    with patch(
-        "custom_components.zeversolar_local.zeversolar_api.zs.inverter_id"
-    ) as api_mock:
-        api_mock.return_value = zever_inverter_id
+    with patch("zever_local.inverter.httpx.AsyncClient.get") as api_mock:
+        mock_response = httpx.Response(
+            200, request=httpx.Request("Get", "https://test.t"), content=_byte_content,
+        )
+        api_mock.return_value = mock_response
         result = await result_flow_handler._test_url("Test_host")
 
     assert result
@@ -164,9 +159,7 @@ async def test_ZeverSolarFlowHandler_test_url_reacts_on_exception():
     """Tests the _test_url racting to an exception."""
     result_flow_handler = ZeverSolarFlowHandler()
 
-    with patch(
-        "custom_components.zeversolar_local.zeversolar_api.zs.inverter_id"
-    ) as api_mock:
+    with patch("zever_local.inverter.httpx.AsyncClient.get") as api_mock:
         api_mock.side_effect = Exception("text")
         result = await result_flow_handler._test_url("Test_host")
 

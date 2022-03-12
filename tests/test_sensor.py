@@ -1,5 +1,6 @@
 """Sensor tests."""
 from unittest.mock import patch
+import httpx
 
 from homeassistant.const import CONF_HOST
 from homeassistant.exceptions import ConfigEntryNotReady
@@ -7,7 +8,7 @@ from homeassistant.helpers.entity import DeviceInfo
 from homeassistant.helpers.update_coordinator import UpdateFailed
 import pytest
 from pytest_homeassistant_custom_component.common import MockConfigEntry
-from zeversolarlocal import ZeverError, ZeverTimeout
+from zever_local.inverter import InverterData, ZeversolarError, ZeversolarTimeout
 
 from custom_components.zeversolar_local.const import CONF_SERIAL_NO, DOMAIN
 from custom_components.zeversolar_local.coordinator import (
@@ -20,6 +21,17 @@ from custom_components.zeversolar_local.sensor import (
     ZeverSolarSensor,
     async_setup_entry,
 )
+
+_registry_id = "EAB241277A36"
+_registry_key = "ZYXTBGERTXJLTSVS"
+_hardware_version = "M11"
+_software_version = "18625-797R+17829-719R"
+_time = "16:22"
+_date = "20/02/2022"
+_serial_number = "ZS150045138C0104"
+_content = f"1\n1\n{_registry_id}\n{_registry_key}\n{_hardware_version}\n{_software_version}\n{_time} {_date}\n1\n1\n{_serial_number}\n1234\n8.9\nOK\nError"
+
+_byte_content = _content.encode()
 
 
 def async_add_entities(entities):
@@ -48,17 +60,14 @@ async def test_async_setup_entry(hass):
 
     hass.data[DOMAIN][config_entry.entry_id] = coordinator
 
-    with patch(
-        "custom_components.zeversolar_local.zeversolar_api.zs.inverter_id"
-    ) as api_mock_inverter:
-        api_mock_inverter.return_value = serial_number
+    mock_response = httpx.Response(
+        200, request=httpx.Request("Get", f"https://{host}"), content=_byte_content
+    )
 
-        with patch(
-            "custom_components.zeversolar_local.zeversolar_api.zs.solardata"
-        ) as api_mock_solardata:
-            api_mock_solardata.return_value = "any value"
+    with patch("zever_local.inverter.httpx.AsyncClient.get") as mock_device_info:
+        mock_device_info.return_value = mock_response
 
-            await async_setup_entry(hass, config_entry, async_add_entities)
+        await async_setup_entry(hass, config_entry, async_add_entities)
 
 
 async def test_async_setup_entry_coordinator_update_ok(hass):
@@ -81,15 +90,15 @@ async def test_async_setup_entry_coordinator_update_ok(hass):
 
     hass.data[DOMAIN][config_entry.entry_id] = coordinator
 
-    with patch(
-        "custom_components.zeversolar_local.zeversolar_api.zs.solardata"
-    ) as api_mock_solardata:
-        solar_data_mock = "solar_data_mock"
-        api_mock_solardata.return_value = solar_data_mock
+    with patch("zever_local.inverter.httpx.AsyncClient.get") as api_mock:
+        mock_response = httpx.Response(
+            200, request=httpx.Request("Get", "https://test.t"), content=_byte_content
+        )
+        api_mock.return_value = mock_response
 
         await async_setup_entry(hass, config_entry, async_add_entities)
-        my_solardata = await coordinator.update_method()
-        assert my_solardata == solar_data_mock
+        my_solardata: InverterData = await coordinator.update_method()
+        assert my_solardata.energy_today_KWh == 8.09
 
 
 async def test_async_setup_entry_coordinator_update_fails_with_timeout(hass):
@@ -113,18 +122,20 @@ async def test_async_setup_entry_coordinator_update_fails_with_timeout(hass):
 
         hass.data[DOMAIN][config_entry.entry_id] = coordinator
 
-        with patch(
-            "custom_components.zeversolar_local.zeversolar_api.zs.solardata"
-        ) as api_mock_solardata:
-            solar_data_mock = "solar_data_mock"
-            api_mock_solardata.return_value = solar_data_mock
+        with patch("zever_local.inverter.httpx.AsyncClient.get") as api_mock:
+            mock_response = httpx.Response(
+                200,
+                request=httpx.Request("Get", "https://test.t"),
+                content=_byte_content,
+            )
+            api_mock.return_value = mock_response
 
             await async_setup_entry(hass, config_entry, async_add_entities)
 
         with patch(
-            "custom_components.zeversolar_local.zeversolar_api.zs.solardata"
+            "zever_local.inverter.httpx.AsyncClient.get"
         ) as api_mock_solardata_fail:
-            api_mock_solardata_fail.side_effect = ZeverTimeout("Timeout happened")
+            api_mock_solardata_fail.side_effect = ZeversolarTimeout("Timeout happened")
             await coordinator.update_method()
 
 
@@ -149,18 +160,20 @@ async def test_async_setup_entry_coordinator_update_fails_with_error(hass):
 
         hass.data[DOMAIN][config_entry.entry_id] = coordinator
 
-        with patch(
-            "custom_components.zeversolar_local.zeversolar_api.zs.solardata"
-        ) as api_mock_solardata:
-            solar_data_mock = "solar_data_mock"
-            api_mock_solardata.return_value = solar_data_mock
+        with patch("zever_local.inverter.httpx.AsyncClient.get") as api_mock:
+            mock_response = httpx.Response(
+                200,
+                request=httpx.Request("Get", "https://test.t"),
+                content=_byte_content,
+            )
+            api_mock.return_value = mock_response
 
             await async_setup_entry(hass, config_entry, async_add_entities)
 
         with patch(
-            "custom_components.zeversolar_local.zeversolar_api.zs.solardata"
+            "zever_local.inverter.httpx.AsyncClient.get"
         ) as api_mock_solardata_fail:
-            api_mock_solardata_fail.side_effect = ZeverError("Error happened")
+            api_mock_solardata_fail.side_effect = ZeversolarError("Error happened")
             await coordinator.update_method()
 
 
@@ -229,9 +242,7 @@ async def test_ZeverSolarSensor_native_value_no_data(hass):
 
         zeversolar_sensor = ZeverSolarSensor(coordinator, device_info, inverter, sensor)
 
-        with patch(
-            "custom_components.zeversolar_local.zeversolar_api.zs.solardata"
-        ) as api_mock:
+        with patch("zever_local.inverter.httpx.AsyncClient.get") as api_mock:
             api_mock.return_value = None
             await coordinator.async_config_entry_first_refresh()
             zeversolar_sensor.native_value
@@ -240,12 +251,9 @@ async def test_ZeverSolarSensor_native_value_no_data(hass):
 async def test_ZeverSolarSensor_native_value_data(hass):
     """Fetch data from coordinator and data can be fetched."""
 
-    class MockClass:
-        power = 1234.5
-
     serial_number = "ABC_x34"
     inverter = Inverter(serial_number)
-    sensor_id = "power"
+    sensor_id = "pac_watt"
     sensor = Sensor(sensor_id)
 
     device_info = DeviceInfo(
@@ -261,26 +269,22 @@ async def test_ZeverSolarSensor_native_value_data(hass):
 
     zeversolar_sensor = ZeverSolarSensor(coordinator, device_info, inverter, sensor)
 
-    power_mock = MockClass()
+    with patch("zever_local.inverter.httpx.AsyncClient.get") as api_mock:
+        mock_response = httpx.Response(
+            200, request=httpx.Request("Get", "https://test.t"), content=_byte_content
+        )
+        api_mock.return_value = mock_response
 
-    with patch(
-        "custom_components.zeversolar_local.zeversolar_api.zs.solardata"
-    ) as api_mock:
-        api_mock.return_value = power_mock
         await coordinator.async_config_entry_first_refresh()
 
         result_native_value = zeversolar_sensor.native_value
 
-    assert result_native_value == power_mock.power
+    assert result_native_value == 1234
 
 
 async def test_ZeverSolarSensor_native_value_ZeverTimeout_exception(hass):
     """Fetch data from coordinator and data can be fetched."""
     with pytest.raises(ConfigEntryNotReady):
-
-        class MockClass:
-            power = 1234.5
-
         serial_number = "ABC_x34"
         inverter = Inverter(serial_number)
         sensor_id = "power"
@@ -299,10 +303,8 @@ async def test_ZeverSolarSensor_native_value_ZeverTimeout_exception(hass):
 
         zeversolar_sensor = ZeverSolarSensor(coordinator, device_info, inverter, sensor)
 
-        with patch(
-            "custom_components.zeversolar_local.zeversolar_api.zs.solardata"
-        ) as api_mock:
-            api_mock.side_effect = ZeverTimeout("uups")
+        with patch("zever_local.inverter.httpx.AsyncClient.get") as api_mock:
+            api_mock.side_effect = ZeversolarTimeout("uups")
             await coordinator.async_config_entry_first_refresh()
 
             zeversolar_sensor.native_value

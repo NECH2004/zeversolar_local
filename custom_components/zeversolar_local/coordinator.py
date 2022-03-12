@@ -8,7 +8,7 @@ from homeassistant.core import HomeAssistant
 from homeassistant.helpers.update_coordinator import DataUpdateCoordinator, UpdateFailed
 
 from .const import DOMAIN, OPT_DATA_INTERVAL_VALUE
-from .zeversolar_api import ZeverSolarApiClient
+from .zever_local import ZeverSolarApiClient
 
 _LOGGER = logging.getLogger(__name__)
 
@@ -16,11 +16,7 @@ _LOGGER = logging.getLogger(__name__)
 class ZeversolarApiCoordinator(DataUpdateCoordinator):
     """Class to manage fetching data from the API."""
 
-    def __init__(
-        self,
-        hass: HomeAssistant,
-        client: ZeverSolarApiClient,
-    ) -> None:
+    def __init__(self, hass: HomeAssistant, client: ZeverSolarApiClient,) -> None:
         """Initialize."""
         self.api = client
         self.platforms = []

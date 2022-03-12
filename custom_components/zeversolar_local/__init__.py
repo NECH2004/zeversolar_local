@@ -17,8 +17,9 @@ from .const import (  # CONF_SERIAL_NO,
     PLATFORMS,
     STARTUP_MESSAGE,
 )
+
 from .coordinator import ZeversolarApiCoordinator
-from .zeversolar_api import ZeverSolarApiClient
+from .zever_local import ZeverSolarApiClient
 
 _LOGGER = logging.getLogger(__name__)
 

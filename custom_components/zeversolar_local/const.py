@@ -18,12 +18,9 @@ CONF_SERIAL_NO = "zever_serial_number"
 OPT_DATA_INTERVAL = "zever_data_interval"
 OPT_DATA_INTERVAL_VALUE: int = 30
 
-SENSOR_DAILY_ENERGY = "daily_energy"
-SENSOR_CURRENT_POWER = "current_power"
-
 
 """The actual version of the integration."""
-VERSION = "0.0.1"
+VERSION = "1.0.0"
 
 """List of platforms that are supported."""
 PLATFORMS = [Platform.SENSOR]

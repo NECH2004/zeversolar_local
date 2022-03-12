@@ -15,9 +15,9 @@ from homeassistant.helpers.update_coordinator import (
     DataUpdateCoordinator,
     UpdateFailed,
 )
-from zeversolarlocal import ZeverError, ZeverTimeout
+from zever_local.inverter import ArrayPosition, ZeversolarError, ZeversolarTimeout
 
-from .const import CONF_SERIAL_NO, DOMAIN, SENSOR_CURRENT_POWER, SENSOR_DAILY_ENERGY
+from .const import CONF_SERIAL_NO, DOMAIN
 from .coordinator import ZeversolarApiCoordinator
 
 # not needed
@@ -42,9 +42,9 @@ async def async_setup_entry(hass, entry, async_add_entities):
             # handled by the data update coordinator.
             async with async_timeout.timeout(10):
                 return await zever_coordinator.api.async_get_data()
-        except ZeverTimeout as err:
+        except ZeversolarTimeout as err:
             raise UpdateFailed(f"Timeout communicating with API: {err}") from err
-        except ZeverError as err:
+        except ZeversolarError as err:
             raise UpdateFailed(f"Error communicating with API: {err}") from err
 
     zever_coordinator.update_method = async_update_data
@@ -55,8 +55,8 @@ async def async_setup_entry(hass, entry, async_add_entities):
 
     inverter = Inverter(serial_number)
 
-    daily_energy_sensor = Sensor(SENSOR_DAILY_ENERGY)
-    current_power_sensor = Sensor(SENSOR_CURRENT_POWER)
+    daily_energy_sensor = Sensor(ArrayPosition.energy_today_KWh.name)
+    current_power_sensor = Sensor(ArrayPosition.pac_watt.name)
 
     all_sensors = (daily_energy_sensor, current_power_sensor)
 
@@ -65,7 +65,7 @@ async def async_setup_entry(hass, entry, async_add_entities):
         name=f"Zeversolar inverter '{inverter.serial_number}'",
         # model="Model A [model]",
         manufacturer="Zeversolar",
-        # hw_version="M10",
+        # hw_version=inverter.,
         # sw_version="17717-709R+17511-707R",
     )
 
@@ -81,7 +81,7 @@ async def async_setup_entry(hass, entry, async_add_entities):
 
 
 _SENSOR_DESCRIPTIONS = {
-    "current_power": SensorEntityDescription(
+    ArrayPosition.pac_watt.name: SensorEntityDescription(
         key="W",
         device_class=SensorDeviceClass.POWER,
         state_class=SensorStateClass.MEASUREMENT,
@@ -90,7 +90,7 @@ _SENSOR_DESCRIPTIONS = {
         icon="mdi:solar-power",
         entity_category=None,
     ),
-    "daily_energy": SensorEntityDescription(
+    ArrayPosition.energy_today_KWh.name: SensorEntityDescription(
         key="kWh",
         device_class=SensorDeviceClass.ENERGY,
         state_class=SensorStateClass.TOTAL_INCREASING,
@@ -123,10 +123,7 @@ class Sensor:
 class Inverter:
     """Defines a Zeversolar inverter."""
 
-    def __init__(
-        self,
-        serial_number: str,
-    ) -> None:
+    def __init__(self, serial_number: str,) -> None:
         self._serial_number = serial_number
 
     @property

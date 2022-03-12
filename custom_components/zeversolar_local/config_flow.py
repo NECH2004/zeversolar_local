@@ -5,10 +5,10 @@ from homeassistant import config_entries
 from homeassistant.const import CONF_HOST
 from homeassistant.core import callback
 import voluptuous as vol
-from zeversolarlocal.api import ZeverError, ZeverTimeout
+from zever_local.inverter import ZeversolarError, ZeversolarTimeout
 
 from .const import CONF_SERIAL_NO, DOMAIN, OPT_DATA_INTERVAL, OPT_DATA_INTERVAL_VALUE
-from .zeversolar_api import ZeverSolarApiClient
+from .zever_local import ZeverSolarApiClient
 
 _LOGGER = logging.getLogger(__name__)
 
@@ -31,11 +31,11 @@ class ZeverSolarFlowHandler(config_entries.ConfigFlow, domain=DOMAIN):
 
             try:
                 zever_id = await self._get_id(user_input[CONF_HOST])
-            except ZeverTimeout as exception:
+            except ZeversolarTimeout as exception:
                 _LOGGER.debug("fetching Zeversolar inverter id failed - %s", exception)
                 return self.async_abort(reason="invalid_inverter")
 
-            except ZeverError as exception:
+            except ZeversolarError as exception:
                 _LOGGER.debug("fetching Zeversolar inverter id failed - %s", exception)
                 self._errors["base"] = "error_inverter"
                 return await self._show_config_form()
@@ -47,21 +47,17 @@ class ZeverSolarFlowHandler(config_entries.ConfigFlow, domain=DOMAIN):
                 )
                 return self.async_abort(reason="invalid_inverter")
 
-            valid = zever_id is not None
-            if valid:
-                for config_entry in self._async_current_entries():
-                    my_data = config_entry.data
-                    my_id = my_data.get(CONF_SERIAL_NO)
+            for config_entry in self._async_current_entries():
+                my_data = config_entry.data
+                my_id = my_data.get(CONF_SERIAL_NO)
 
-                    if my_id == zever_id:
-                        return self.async_abort(reason="duplicate_inverter")
+                if my_id == zever_id:
+                    return self.async_abort(reason="duplicate_inverter")
 
-                return self.async_create_entry(
-                    title=f"Zeversolar Inverter '{zever_id}'",
-                    data={CONF_HOST: user_input[CONF_HOST], CONF_SERIAL_NO: zever_id},
-                )
-            else:
-                self._errors["base"] = "host"
+            return self.async_create_entry(
+                title=f"Zeversolar Inverter '{zever_id}'",
+                data={CONF_HOST: user_input[CONF_HOST], CONF_SERIAL_NO: zever_id},
+            )
 
         return await self._show_config_form()
 
