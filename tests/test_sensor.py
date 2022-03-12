@@ -62,7 +62,11 @@ async def test_async_setup_entry(hass):
 
     config_entry.add_to_hass(hass)
 
-    hass.data[DOMAIN][config_entry.entry_id] = {ENTRY_COORDINATOR: coordinator}
+    device_info = DeviceInfo()
+    hass.data[DOMAIN][config_entry.entry_id] = {
+        ENTRY_COORDINATOR: coordinator,
+        ENTRY_DEVICE_INFO: device_info,
+    }
 
     mock_response = httpx.Response(
         200, request=httpx.Request("Get", f"https://{host}"), content=_byte_content
@@ -92,7 +96,11 @@ async def test_async_setup_entry_coordinator_update_ok(hass):
 
     config_entry.add_to_hass(hass)
 
-    hass.data[DOMAIN][config_entry.entry_id] = {ENTRY_COORDINATOR: coordinator}
+    device_info = DeviceInfo()
+    hass.data[DOMAIN][config_entry.entry_id] = {
+        ENTRY_COORDINATOR: coordinator,
+        ENTRY_DEVICE_INFO: device_info,
+    }
 
     with patch("zever_local.inverter.httpx.AsyncClient.get") as api_mock:
         mock_response = httpx.Response(
@@ -124,7 +132,11 @@ async def test_async_setup_entry_coordinator_update_fails_with_timeout(hass):
 
         config_entry.add_to_hass(hass)
 
-        hass.data[DOMAIN][config_entry.entry_id] = {ENTRY_COORDINATOR: coordinator}
+        device_info = DeviceInfo()
+        hass.data[DOMAIN][config_entry.entry_id] = {
+            ENTRY_COORDINATOR: coordinator,
+            ENTRY_DEVICE_INFO: device_info,
+        }
 
         with patch("zever_local.inverter.httpx.AsyncClient.get") as api_mock:
             mock_response = httpx.Response(
@@ -162,7 +174,11 @@ async def test_async_setup_entry_coordinator_update_fails_with_error(hass):
 
         config_entry.add_to_hass(hass)
 
-        hass.data[DOMAIN][config_entry.entry_id] = {ENTRY_COORDINATOR: coordinator}
+        device_info = DeviceInfo()
+        hass.data[DOMAIN][config_entry.entry_id] = {
+            ENTRY_COORDINATOR: coordinator,
+            ENTRY_DEVICE_INFO: device_info,
+        }
 
         with patch("zever_local.inverter.httpx.AsyncClient.get") as api_mock:
             mock_response = httpx.Response(

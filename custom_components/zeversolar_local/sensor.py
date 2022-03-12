@@ -17,7 +17,7 @@ from homeassistant.helpers.update_coordinator import (
 )
 from zever_local.inverter import ArrayPosition, ZeversolarError, ZeversolarTimeout
 
-from .const import CONF_SERIAL_NO, DOMAIN, ENTRY_COORDINATOR
+from .const import CONF_SERIAL_NO, DOMAIN, ENTRY_COORDINATOR, ENTRY_DEVICE_INFO
 from .coordinator import ZeversolarApiCoordinator
 
 # not needed
@@ -94,21 +94,7 @@ async def async_setup_entry(hass, entry, async_add_entities):
 
     all_sensors = (daily_energy_sensor, current_power_sensor)
 
-    device_info = DeviceInfo(
-        configuration_url=f"http://{inverter.address}",
-        # default_manufacturer: str
-        # default_model: str
-        # default_name: str
-        # entry_type: DeviceEntryType | None
-        identifiers={(DOMAIN, inverter.serial_number)},
-        manufacturer="Zeversolar",
-        # model: str | None
-        name=f"Zeversolar inverter '{inverter.serial_number}'",
-        # suggested_area: str | None
-        sw_version=inverter.software_version,
-        hw_version=inverter.hardware_version
-        # via_device: tuple[str, str]
-    )
+    device_info: DeviceInfo = hass.data[DOMAIN][entry.entry_id][ENTRY_DEVICE_INFO]
 
     entities = []
 

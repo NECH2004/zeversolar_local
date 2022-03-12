@@ -5,10 +5,11 @@ from dataclasses import dataclass
 from homeassistant.components.button import ButtonEntity, ButtonEntityDescription
 from homeassistant.config_entries import ConfigEntry
 from homeassistant.core import HomeAssistant
+from homeassistant.helpers.entity import DeviceInfo
 from homeassistant.helpers.entity_platform import AddEntitiesCallback
 from zever_local.inverter import Inverter
 
-from .const import DOMAIN, ENTRY_COORDINATOR
+from .const import DOMAIN, ENTRY_COORDINATOR, ENTRY_DEVICE_INFO
 from .coordinator import ZeversolarApiCoordinator
 
 # not needed
@@ -52,8 +53,14 @@ async def async_setup_entry(
     ]
     inverter = zever_coordinator.client.inverter
 
-    power_on_button = ZeverSolarButton(inverter, BUTTON_POWER_ON_ENTITY_DESCRIPTION)
-    power_off_button = ZeverSolarButton(inverter, BUTTON_POWER_OFF_ENTITY_DESCRIPTION)
+    device_info: DeviceInfo = hass.data[DOMAIN][entry.entry_id][ENTRY_DEVICE_INFO]
+
+    power_on_button = ZeverSolarButton(
+        inverter, device_info, BUTTON_POWER_ON_ENTITY_DESCRIPTION
+    )
+    power_off_button = ZeverSolarButton(
+        inverter, device_info, BUTTON_POWER_OFF_ENTITY_DESCRIPTION
+    )
 
     entities = [power_on_button, power_off_button]
     async_add_entities(entities)
@@ -65,10 +72,19 @@ class ZeverSolarButton(ButtonEntity):
     _entity_description: ZeversolarButtonEntityDescription
 
     def __init__(
-        self, inverter: Inverter, entity_description: ZeversolarButtonEntityDescription
+        self,
+        inverter: Inverter,
+        device_info: DeviceInfo,
+        entity_description: ZeversolarButtonEntityDescription,
     ) -> None:
         """Initialize an inverter button."""
+
+        self._attr_unique_id = (
+            f"{DOMAIN}_{inverter.serial_number}_{entity_description.key}"
+        )
+        self._attr_device_info = device_info
         self._entity_description = entity_description
+        self._device_info = device_info
         self._inverter = inverter
 
     async def async_press(self) -> None:
