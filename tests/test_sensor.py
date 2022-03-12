@@ -191,8 +191,13 @@ async def test_Sensor_class(hass):
 async def test_Inverter_class(hass):
     """Simple test for construction and initialization."""
     serial_number = "ABC_x34"
+    address = "10.10.10.1"
+    hardware_version = "h v"
+    software_version = "sw"
 
-    result_inverter = Inverter(serial_number)
+    result_inverter = Inverter(
+        serial_number, address, hardware_version, software_version
+    )
     result_serial_number = result_inverter.serial_number
 
     assert type(result_inverter) is Inverter
@@ -202,7 +207,10 @@ async def test_Inverter_class(hass):
 async def test_ZeverSolarSensor_class(hass):
     """Simple test for construction and initialization."""
     serial_number = "ABC_x34"
-    inverter = Inverter(serial_number)
+    address = "10.10.10.1"
+    hardware_version = "h v"
+    software_version = "sw"
+    inverter = Inverter(serial_number, address, hardware_version, software_version)
     sensor_id = "sensor_1"
     sensor = Sensor(sensor_id)
 
@@ -225,7 +233,10 @@ async def test_ZeverSolarSensor_native_value_no_data(hass):
     """Fetch data from coordinator but data is None."""
     with pytest.raises(ConfigEntryNotReady):
         serial_number = "ABC_x34"
-        inverter = Inverter(serial_number)
+        address = "10.10.10.1"
+        hardware_version = "h v"
+        software_version = "sw"
+        inverter = Inverter(serial_number, address, hardware_version, software_version)
         sensor_id = "power"
         sensor = Sensor(sensor_id)
 
@@ -252,7 +263,10 @@ async def test_ZeverSolarSensor_native_value_data(hass):
     """Fetch data from coordinator and data can be fetched."""
 
     serial_number = "ABC_x34"
-    inverter = Inverter(serial_number)
+    address = "10.10.10.1"
+    hardware_version = "h v"
+    software_version = "sw"
+    inverter = Inverter(serial_number, address, hardware_version, software_version)
     sensor_id = "pac_watt"
     sensor = Sensor(sensor_id)
 
@@ -286,7 +300,10 @@ async def test_ZeverSolarSensor_native_value_ZeverTimeout_exception(hass):
     """Fetch data from coordinator and data can be fetched."""
     with pytest.raises(ConfigEntryNotReady):
         serial_number = "ABC_x34"
-        inverter = Inverter(serial_number)
+        address = "10.10.10.1"
+        hardware_version = "h v"
+        software_version = "sw"
+        inverter = Inverter(serial_number, address, hardware_version, software_version)
         sensor_id = "power"
         sensor = Sensor(sensor_id)
 

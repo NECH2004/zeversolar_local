@@ -7,6 +7,7 @@ from homeassistant.components.sensor import (  # STATE_CLASS_TOTAL_INCREASING,
     SensorEntityDescription,
     SensorStateClass,
 )
+from homeassistant.const import CONF_HOST
 from homeassistant.const import ENERGY_KILO_WATT_HOUR, POWER_WATT
 from homeassistant.exceptions import ConfigEntryNotReady
 from homeassistant.helpers.entity import DeviceInfo, EntityCategory
@@ -52,8 +53,13 @@ async def async_setup_entry(hass, entry, async_add_entities):
     await zever_coordinator.async_config_entry_first_refresh()
 
     serial_number = entry.data[CONF_SERIAL_NO]
+    url = entry.data[CONF_HOST]
 
-    inverter = Inverter(serial_number)
+    inverter_data = await zever_coordinator.api.async_get_data()
+    hardware_version = inverter_data.hardware_version
+    software_version = inverter_data.software_version
+
+    inverter = Inverter(serial_number, url, hardware_version, software_version)
 
     daily_energy_sensor = Sensor(ArrayPosition.energy_today_KWh.name)
     current_power_sensor = Sensor(ArrayPosition.pac_watt.name)
@@ -61,12 +67,19 @@ async def async_setup_entry(hass, entry, async_add_entities):
     all_sensors = (daily_energy_sensor, current_power_sensor)
 
     device_info = DeviceInfo(
+        configuration_url=f"http://{inverter.address}",
+        # default_manufacturer: str
+        # default_model: str
+        # default_name: str
+        # entry_type: DeviceEntryType | None
         identifiers={(DOMAIN, inverter.serial_number)},
-        name=f"Zeversolar inverter '{inverter.serial_number}'",
-        # model="Model A [model]",
         manufacturer="Zeversolar",
-        # hw_version=inverter.,
-        # sw_version="17717-709R+17511-707R",
+        # model: str | None
+        name=f"Zeversolar inverter '{inverter.serial_number}'",
+        # suggested_area: str | None
+        sw_version=inverter.software_version,
+        hw_version=inverter.hardware_version
+        # via_device: tuple[str, str]
     )
 
     entities = []
@@ -123,13 +136,37 @@ class Sensor:
 class Inverter:
     """Defines a Zeversolar inverter."""
 
-    def __init__(self, serial_number: str,) -> None:
+    def __init__(
+        self,
+        serial_number: str,
+        address: str,
+        hardware_version: str,
+        software_version: str,
+    ) -> None:
         self._serial_number = serial_number
+        self._address = address
+        self._hardware_version = hardware_version
+        self._software_version = software_version
 
     @property
     def serial_number(self) -> str:
         """Gets the serial number."""
         return self._serial_number
+
+    @property
+    def address(self) -> str:
+        """Gets the inverter address."""
+        return self._address
+
+    @property
+    def hardware_version(self) -> str:
+        """Gets the hardware version."""
+        return self._hardware_version
+
+    @property
+    def software_version(self) -> str:
+        """Gets the software version."""
+        return self._software_version
 
 
 class ZeverSolarSensor(CoordinatorEntity, SensorEntity):
