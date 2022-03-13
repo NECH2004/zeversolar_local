@@ -42,6 +42,7 @@ BUTTON_POWER_ON_ENTITY_DESCRIPTION = ZeversolarButtonEntityDescription(
     icon="mdi:power-cycle",
     # device_class=ButtonDeviceClass.RESTART
 )
+
 BUTTON_POWER_OFF_ENTITY_DESCRIPTION = ZeversolarButtonEntityDescription(
     key="power_off",
     name="Power Off",
