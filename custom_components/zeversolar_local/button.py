@@ -39,14 +39,14 @@ BUTTON_POWER_ON_ENTITY_DESCRIPTION = ZeversolarButtonEntityDescription(
     key="power_on",
     name="Power On",
     press_action=lambda device: device.power_on(),
-    icon="mdi:dip-switch",
+    icon="mdi:power-cycle",
     # device_class=ButtonDeviceClass.RESTART
 )
 BUTTON_POWER_OFF_ENTITY_DESCRIPTION = ZeversolarButtonEntityDescription(
     key="power_off",
     name="Power Off",
     press_action=lambda device: device.power_off(),
-    icon="mdi:lightbulb",
+    icon="mdi:power-off",
 )
 
 
