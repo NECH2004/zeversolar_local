@@ -41,6 +41,7 @@ async def async_setup_entry(hass: HomeAssistant, entry: ConfigEntry) -> bool:
     data_interval = entry.options.get(OPT_DATA_INTERVAL, OPT_DATA_INTERVAL_VALUE)
 
     client = ZeverSolarApiClient(host)
+    await client.inverter.async_connect()
     coordinator = ZeversolarApiCoordinator(hass, client=client)
     coordinator.update_interval = timedelta(seconds=data_interval)
     await coordinator.async_refresh()
