@@ -21,7 +21,7 @@ from custom_components.zeversolar_local.const import (
     CONF_SERIAL_NO,
     DOMAIN,
     ENTRY_COORDINATOR,
-    ENTRY_DEVICE_INFO,
+    #    ENTRY_DEVICE_INFO,
 )
 from custom_components.zeversolar_local.coordinator import ZeversolarApiCoordinator
 from custom_components.zeversolar_local.zever_local import ZeverSolarApiClient
@@ -38,18 +38,17 @@ _content = f"1\n1\n{_registry_id}\n{_registry_key}\n{_hardware_version}\n{_softw
 _byte_content = _content.encode()
 
 
-@staticmethod
-def _side_effect_except():
-    mock_response = httpx.Response(
-        200, request=httpx.Request("Get", "https://test.t"), content=_byte_content
-    )
-
-    yield mock_response
-    yield Exception("boo")
-
-
 async def test_async_setup_entry_config_not_ready(hass):
     """Test the integration setup with no connection to the inverter throwning a ConfigEntryNotReady exception."""
+
+    def side_effect_except():
+        mock_response = httpx.Response(
+            200, request=httpx.Request("Get", "https://test.t"), content=_byte_content
+        )
+
+        yield mock_response
+        yield Exception("boo")
+
     with pytest.raises(ConfigEntryNotReady):
         mock_integration(hass, MockModule(DOMAIN))
 
@@ -62,7 +61,7 @@ async def test_async_setup_entry_config_not_ready(hass):
         config_entry.add_to_hass(hass)
 
         with patch("zever_local.inverter.httpx.AsyncClient.get") as api_mock:
-            api_mock.side_effect = _side_effect_except()
+            api_mock.side_effect = side_effect_except()
 
             await async_setup_entry(hass, config_entry)
 
