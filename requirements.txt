@@ -94,5 +94,5 @@ voluptuous==0.12.2
 voluptuous-serialize==2.5.0
 wrapt==1.13.3
 yarl==1.7.2
-zever-local==1.0.2
+zever-local==1.0.3
 zipp==3.7.0

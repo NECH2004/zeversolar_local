@@ -23,7 +23,7 @@ OPT_DATA_INTERVAL_VALUE: int = 30
 
 
 """The actual version of the integration."""
-VERSION = "1.0.0"
+VERSION = "1.1.0"
 
 """List of platforms that are supported."""
 PLATFORMS = [Platform.SENSOR, Platform.BUTTON]
