@@ -12,8 +12,8 @@ from homeassistant.exceptions import ConfigEntryNotReady
 from homeassistant.helpers.entity import DeviceInfo
 
 from .const import (
-    DOMAIN,
     CONF_SERIAL_NO,
+    DOMAIN,
     ENTRY_COORDINATOR,
     ENTRY_DEVICE_INFO,
     OPT_DATA_INTERVAL,
@@ -21,7 +21,6 @@ from .const import (
     PLATFORMS,
     STARTUP_MESSAGE,
 )
-
 from .coordinator import ZeversolarApiCoordinator
 from .zever_local import ZeverSolarApiClient
 

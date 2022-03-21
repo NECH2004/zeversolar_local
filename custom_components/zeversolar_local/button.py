@@ -2,10 +2,7 @@
 from collections.abc import Awaitable, Callable
 from dataclasses import dataclass
 
-from homeassistant.components.button import (
-    ButtonEntity,
-    ButtonEntityDescription,
-)
+from homeassistant.components.button import ButtonEntity, ButtonEntityDescription
 from homeassistant.config_entries import ConfigEntry
 from homeassistant.core import HomeAssistant
 from homeassistant.helpers.entity import DeviceInfo
@@ -93,6 +90,11 @@ class ZeverSolarButton(ButtonEntity):
         self._attr_device_info = device_info
         self.entity_description = entity_description
         self._inverter = inverter
+
+    @property
+    def entity_registry_enabled_default(self) -> bool:
+        """Return if the entity should be enabled when first added to the entity registry."""
+        return False
 
     async def async_press(self) -> None:
         """Perform the button action."""

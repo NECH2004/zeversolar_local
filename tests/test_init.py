@@ -17,11 +17,10 @@ from custom_components.zeversolar_local.__init__ import (
     async_setup_entry,
     async_unload_entry,
 )
-from custom_components.zeversolar_local.const import (
+from custom_components.zeversolar_local.const import (  # ENTRY_DEVICE_INFO,
     CONF_SERIAL_NO,
     DOMAIN,
     ENTRY_COORDINATOR,
-    #    ENTRY_DEVICE_INFO,
 )
 from custom_components.zeversolar_local.coordinator import ZeversolarApiCoordinator
 from custom_components.zeversolar_local.zever_local import ZeverSolarApiClient

@@ -8,20 +8,20 @@ import pytest
 from pytest_homeassistant_custom_component.common import MockConfigEntry
 from zever_local.inverter import Inverter
 
-from custom_components.zeversolar_local.const import CONF_SERIAL_NO, DOMAIN
+from custom_components.zeversolar_local.button import (
+    ZeverSolarButton,
+    ZeversolarButtonEntityDescription,
+    async_setup_entry,
+)
+from custom_components.zeversolar_local.const import (
+    CONF_SERIAL_NO,
+    DOMAIN,
+    ENTRY_COORDINATOR,
+    ENTRY_DEVICE_INFO,
+)
 from custom_components.zeversolar_local.coordinator import (
     ZeverSolarApiClient,
     ZeversolarApiCoordinator,
-)
-from custom_components.zeversolar_local.button import (
-    async_setup_entry,
-    ZeversolarButtonEntityDescription,
-    ZeverSolarButton,
-)
-
-from custom_components.zeversolar_local.const import (
-    ENTRY_COORDINATOR,
-    ENTRY_DEVICE_INFO,
 )
 
 

@@ -44,6 +44,18 @@ _SENSOR_DESCRIPTIONS = {
         icon="mdi:solar-power",
         entity_category=None,
     ),
+    ArrayPosition.communication_status.name: SensorEntityDescription(
+        key="cloud_status",
+        name="Cloud Connection State",
+        icon="mdi:cloud-upload",
+        entity_category=EntityCategory.DIAGNOSTIC,
+    ),
+    ArrayPosition.status.name: SensorEntityDescription(
+        key="inverter_status",
+        name="Inverter State",
+        icon="mdi:solar_power",
+        entity_category=EntityCategory.DIAGNOSTIC,
+    ),
 }
 
 _DEFAULT_SENSOR = SensorEntityDescription(
@@ -91,8 +103,15 @@ async def async_setup_entry(hass, entry, async_add_entities):
 
     daily_energy_sensor = Sensor(ArrayPosition.energy_today_KWh.name)
     current_power_sensor = Sensor(ArrayPosition.pac_watt.name)
+    communication_status_sensor = Sensor(ArrayPosition.communication_status.name)
+    status_sensor = Sensor(ArrayPosition.status.name)
 
-    all_sensors = (daily_energy_sensor, current_power_sensor)
+    all_sensors = (
+        daily_energy_sensor,
+        current_power_sensor,
+        communication_status_sensor,
+        status_sensor,
+    )
 
     device_info: DeviceInfo = hass.data[DOMAIN][entry.entry_id][ENTRY_DEVICE_INFO]
 
@@ -186,3 +205,8 @@ class ZeverSolarSensor(CoordinatorEntity, SensorEntity):
         value = getattr(my_data, self._sensor.sensor_id)
         self._previous_value = value
         return value
+
+    @property
+    def entity_registry_enabled_default(self) -> bool:
+        """Return if the entity should be enabled when first added to the entity registry."""
+        return self.entity_description.entity_category != EntityCategory.DIAGNOSTIC

@@ -10,7 +10,12 @@ import pytest
 from pytest_homeassistant_custom_component.common import MockConfigEntry
 from zever_local.inverter import InverterData, ZeversolarError, ZeversolarTimeout
 
-from custom_components.zeversolar_local.const import CONF_SERIAL_NO, DOMAIN
+from custom_components.zeversolar_local.const import (
+    CONF_SERIAL_NO,
+    DOMAIN,
+    ENTRY_COORDINATOR,
+    ENTRY_DEVICE_INFO,
+)
 from custom_components.zeversolar_local.coordinator import (
     ZeverSolarApiClient,
     ZeversolarApiCoordinator,
@@ -20,10 +25,6 @@ from custom_components.zeversolar_local.sensor import (
     Sensor,
     ZeverSolarSensor,
     async_setup_entry,
-)
-from custom_components.zeversolar_local.const import (
-    ENTRY_COORDINATOR,
-    ENTRY_DEVICE_INFO,
 )
 
 _registry_id = "EAB241277A36"
@@ -41,7 +42,7 @@ _byte_content = _content.encode()
 def async_add_entities(entities):
     """Add entities to a sensor as simuation for unit test. Helper method."""
     count = entities.__len__()
-    assert count == 2
+    assert count == 4
 
 
 async def test_async_setup_entry(hass):
