@@ -53,7 +53,7 @@ _SENSOR_DESCRIPTIONS = {
     ArrayPosition.status.name: SensorEntityDescription(
         key="inverter_status",
         name="Inverter State",
-        icon="mdi:solar_power",
+        icon="mdi:solar-power",
         entity_category=EntityCategory.DIAGNOSTIC,
     ),
 }
