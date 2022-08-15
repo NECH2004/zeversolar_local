@@ -18,19 +18,6 @@ jobs:
     - name: Hassfest validation
       uses: "home-assistant/actions/hassfest@master"
 
-  validate-hacs:
-    runs-on: ubuntu-latest
-    name: With HACS
-    steps:
-    - name: Check out repository
-      uses: actions/checkout@v2
-
-    - name: HACS validation
-      uses: "hacs/integration/action@main"
-      with:
-        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        CATEGORY: "integration"
-
   tests:
     runs-on: "ubuntu-latest"
     name: Run tests
