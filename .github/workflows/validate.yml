@@ -7,9 +7,6 @@ on:
   push:
     branches:
       - dev
-  schedule:
-    - cron:  '30 16 */3 * *'
-
 jobs:
   validate-hassfest:
     runs-on: ubuntu-latest
