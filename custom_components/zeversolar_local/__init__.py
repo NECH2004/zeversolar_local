@@ -40,13 +40,18 @@ async def async_setup_entry(hass: HomeAssistant, entry: ConfigEntry) -> bool:
     data_interval = entry.options.get(OPT_DATA_INTERVAL, OPT_DATA_INTERVAL_VALUE)
 
     client = ZeverSolarApiClient(host)
-    await client.inverter.async_connect()
-    coordinator = ZeversolarApiCoordinator(hass, client=client)
-    coordinator.update_interval = timedelta(seconds=data_interval)
-    await coordinator.async_refresh()
 
-    if not coordinator.last_update_success:
-        raise ConfigEntryNotReady
+    try:
+        await client.inverter.async_connect()
+        coordinator = ZeversolarApiCoordinator(hass, client=client)
+        coordinator.update_interval = timedelta(seconds=data_interval)
+        await coordinator.async_refresh()
+
+        if not coordinator.last_update_success:
+            raise ConfigEntryNotReady
+
+    except Exception as err:
+        raise ConfigEntryNotReady from err
 
     serial_number = entry.data[CONF_SERIAL_NO]
 
@@ -71,7 +76,7 @@ async def async_setup_entry(hass: HomeAssistant, entry: ConfigEntry) -> bool:
         # via_device: tuple[str, str]
     )
 
-    # Store the deviceinfo and  coordinator object for the platforms to access
+    # Store the deviceinfo and coordinator object for the platforms to access
     hass.data[DOMAIN][entry.entry_id] = {
         ENTRY_COORDINATOR: coordinator,
         ENTRY_DEVICE_INFO: device_info,
