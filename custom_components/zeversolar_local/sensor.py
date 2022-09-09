@@ -7,7 +7,7 @@ from homeassistant.components.sensor import (  # STATE_CLASS_TOTAL_INCREASING,
     SensorEntityDescription,
     SensorStateClass,
 )
-from homeassistant.const import CONF_HOST, ENERGY_KILO_WATT_HOUR, POWER_WATT
+from homeassistant.const import ENERGY_KILO_WATT_HOUR, POWER_WATT
 from homeassistant.exceptions import ConfigEntryNotReady
 from homeassistant.helpers.entity import DeviceInfo, EntityCategory
 from homeassistant.helpers.update_coordinator import (
@@ -97,13 +97,6 @@ async def async_setup_entry(hass, entry, async_add_entities):
     await zever_coordinator.async_config_entry_first_refresh()
 
     serial_number = entry.data[CONF_SERIAL_NO]
-    url = entry.data[CONF_HOST]
-
-    inverter_data = await zever_coordinator.client.async_get_data()
-    hardware_version = inverter_data.hardware_version
-    software_version = inverter_data.software_version
-
-    inverter = Inverter(serial_number, url, hardware_version, software_version)
 
     daily_energy_sensor = Sensor(ArrayPosition.energy_today_KWh.name)
     current_power_sensor = Sensor(ArrayPosition.pac_watt.name)
@@ -123,7 +116,7 @@ async def async_setup_entry(hass, entry, async_add_entities):
 
     # Individual inverter sensors entities
     entities.extend(
-        ZeverSolarSensor(zever_coordinator, device_info, inverter.serial_number, sensor)
+        ZeverSolarSensor(zever_coordinator, device_info, serial_number, sensor)
         for sensor in all_sensors
     )
 
