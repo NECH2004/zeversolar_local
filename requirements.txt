@@ -10,6 +10,6 @@ pyserial
 pytest>=7.2.0
 pytest-aiohttp
 pytest-cov>=3.0.0
-pytest-homeassistant-custom-component>=0.11.9
+pytest-homeassistant-custom-component
 voluptuous
 zever-local==1.0.3
