@@ -2,7 +2,7 @@ aiohttp
 aiohttp-cors
 coverage>=6.4.2
 debugpy
-homeassistant==2022.8.4
+homeassistant
 isort
 Jinja2
 pylint
