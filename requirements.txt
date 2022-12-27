@@ -44,8 +44,8 @@ greenlet
 h11
 hass-nabucasa
 home-assistant-bluetooth
-home-assistant-frontend>=0220802.0
-homeassistant>=2022.8.4
+home-assistant-frontend==0220802.0
+homeassistant==2022.8.4
 httpcore
 http
 idna
