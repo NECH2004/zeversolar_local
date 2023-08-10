@@ -72,7 +72,6 @@ async def async_setup_entry(hass: HomeAssistant, entry: ConfigEntry) -> bool:
         # suggested_area: str | None
         sw_version=software_version,
         hw_version=hardware_version,
-        has_entity_name=True,
         # via_device: tuple[str, str]
     )
 
