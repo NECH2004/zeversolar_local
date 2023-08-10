@@ -1,15 +1,15 @@
 {
   "domain": "zeversolar_local",
   "name": "Zeversolar Inverter - local",
+  "codeowners": [
+    "@NECH"
+  ],
   "config_flow": true,
   "documentation": "https://github.com/NECH2004/zeversolar_local",
+  "iot_class": "local_polling",
   "issue_tracker": "https://github.com/NECH2004/zeversolar_local/issues",
   "requirements": [
     "zever_local==1.0.3"
   ],
-  "codeowners": [
-    "@NECH"
-  ],
-  "iot_class": "local_polling",
   "version": "1.1.5"
 }
